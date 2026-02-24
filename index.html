@@ -59,7 +59,7 @@ body{font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;back
 .share-box{background:#fff;border-radius:14px;padding:16px;margin:16px 0;box-shadow:0 1px 8px rgba(0,0,0,.07);text-align:center}
 .share-box .share-label{font-size:.82em;color:#5a5a54;margin-bottom:8px}
 .share-url-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
-.share-url{flex:1;padding:10px 12px;border:2px solid #89d0d6;border-radius:10px;font-size:.82em;color:#2F2F28;background:#F0EFFE;word-break:break-all;text-align:left;font-family:monospace;cursor:pointer}
+.share-url{flex:1;padding:10px 12px;border:2px solid #89d0d6;border-radius:10px;font-size:.82em;color:#2F2F28;background:#F0EFFE;word-break:break-all;text-align:left;font-family:monospace;cursor:pointer;line-height:1.5}
 .share-url:active{background:#e0f5f7}
 .share-box button{padding:8px 20px;background:#31A2AC;color:white;border:none;border-radius:10px;font-size:.85em;cursor:pointer;font-weight:600;white-space:nowrap}
 .share-box button:active{background:#278a93}
@@ -71,6 +71,7 @@ body{font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;back
 .share-mail{background:#666}
 .footer{text-align:center;padding:20px 10px 10px;font-size:.8em;color:#6a6a64}
 .footer a{color:#31A2AC}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 #guide{display:none}
 </style>
 </head>
@@ -85,7 +86,7 @@ body{font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;back
 <div id="landing" class="landing">
 <h2 id="landingTitle"></h2>
 <p id="landingDesc"></p>
-<input type="date" id="etInput">
+<label for="etInput" class="sr-only" id="etLabel"></label><input type="date" id="etInput">
 <button class="go" onclick="startGuide()" id="landingBtn"></button>
 <div class="disc"><p id="landingDisc"></p></div>
 </div>
@@ -96,7 +97,7 @@ body{font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;back
 <div class="share-box">
 <div class="share-label" id="shareLabel"></div>
 <div class="share-url-row">
-<div class="share-url" id="shareUrl" onclick="shareLink()"></div>
+<button type="button" class="share-url" id="shareUrl" onclick="shareLink()"></button>
 <button onclick="shareLink()" id="shareBtn"></button>
 </div>
 <div class="share-btns" id="shareBtns"></div>
@@ -145,6 +146,7 @@ de:{
   landTitle:'Wann ist dein errechneter Termin?',
   landDesc:'Gib den ET ein und erhalte deinen personalisierten Wochen-Guide!',
   landBtn:'Los geht\u2019s! \ud83d\ude80',
+  etLabel:'Errechneter Termin',
   landDisc:'\u26a0\ufe0f <b>Hinweis:</b> Dies ist <b>keine medizinische Beratung</b>. Alle Angaben sind sorgf\u00e4ltig recherchiert, aber ohne Gew\u00e4hr. Die Informationen ersetzen nicht den Besuch bei \u00c4rztin/Arzt oder Hebamme.',
   etBanner:'\ud83d\udcc5 Errechneter Termin: <b>%s</b>',
   countdownTpl:'\ud83d\udc76 SSW %ssw%+%d% \u2022 Noch <b>%w% Wochen und %d2% Tage</b> bis zum ET!',
@@ -176,6 +178,7 @@ en:{
   landTitle:'When is your due date?',
   landDesc:'Enter your due date and get your personalized week-by-week guide!',
   landBtn:'Let\u2019s go! \ud83d\ude80',
+  etLabel:'Due date',
   landDisc:'\u26a0\ufe0f <b>Note:</b> This is <b>not medical advice</b>. All information is carefully researched but provided without warranty. It does not replace a visit to your doctor or midwife.',
   etBanner:'\ud83d\udcc5 Due Date: <b>%s</b>',
   countdownTpl:'\ud83d\udc76 Week %ssw%+%d% \u2022 <b>%w% weeks and %d2% days</b> to go!',
@@ -331,6 +334,7 @@ function applyUI(){
   document.getElementById('landingTitle').textContent=t.landTitle;
   document.getElementById('landingDesc').textContent=t.landDesc;
   document.getElementById('landingBtn').innerHTML=t.landBtn;
+  document.getElementById('etLabel').textContent=t.etLabel;
   document.getElementById('landingDisc').innerHTML=t.landDisc;
   document.getElementById('triHead1').textContent=t.tri1;
   document.getElementById('triHead2').textContent=t.tri2;
@@ -440,7 +444,7 @@ function buildCards(et){
 
     var h='<div class="'+cls+'">';
     if(isNow)h+='<div class="now-badge">'+t.nowBadge.replace('%ssw%',curSSW).replace('%d%',curDay)+'</div>';
-    h+='<div class="tp"><div class="ic" style="background:'+w.cl+'"><svg viewBox="0 0 40 40">'+w.svg+'</svg></div>';
+    h+='<div class="tp"><div class="ic" style="background:'+w.cl+'"><svg viewBox="0 0 40 40" role="img" aria-label="'+w.sz.replace(/"/g,'&quot;')+'">'+w.svg+'</svg></div>';
     h+='<div class="ti"><h2>'+t.weekLabel+' '+w.w+': '+w.n+'</h2>';
     h+='<div class="dt">\ud83d\udcc5 '+fmt(weekStart)+etNote+'</div>';
     h+='<div class="sz">\ud83d\udccf '+w.sz+'</div></div></div>';
