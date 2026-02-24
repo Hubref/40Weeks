@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSW-Guide – Schwangerschaftswochen-Tracker</title>
+<meta name="description" content="Interaktiver Schwangerschaftswochen-Guide: 40 Wochen mit Fruchtvergleichen, Entwicklungsinfos & Countdown. Kostenlos, ohne Tracking, ohne Cookies.">
+<meta name="author" content="Florian König-Huber">
+<meta property="og:title" content="🤰 SSW-Guide – Pregnancy Week Tracker">
+<meta property="og:description" content="Your personalized week-by-week pregnancy guide. Just enter your due date!">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://em-content.zobj.net/source/apple/391/pregnant-woman_1f930.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤰</text></svg>">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:#F0EFFE;padding:16px;color:#2F2F28;line-height:1.5}
+.c{max-width:700px;margin:0 auto}
+.hd{text-align:center;padding:24px 10px 10px}
+.hd h1{font-size:1.5em;color:#31A2AC}
+.hd p{color:#6a6a64;font-size:.9em;margin-top:4px}
+.lang-switch{text-align:center;margin:8px 0}
+.lang-switch button{padding:4px 12px;margin:0 3px;border:2px solid #89d0d6;border-radius:14px;background:white;color:#31A2AC;font-size:.82em;cursor:pointer;font-weight:600}
+.lang-switch button.active{background:#31A2AC;color:white;border-color:#31A2AC}
+.et{text-align:center;background:#31A2AC;color:white;padding:12px;border-radius:12px;margin:12px 0;font-weight:700;font-size:1.05em}
+#countdown{text-align:center;background:#e0f5f7;padding:12px;border-radius:12px;margin:8px 0;font-size:.95em;color:#31A2AC;font-weight:600}
+.landing{text-align:center;padding:60px 20px}
+.landing h2{color:#31A2AC;font-size:1.3em;margin-bottom:16px}
+.landing p{color:#5a5a54;margin-bottom:24px;font-size:.95em}
+.landing input[type=date]{padding:12px 20px;border:2px solid #89d0d6;border-radius:12px;font-size:1.1em;color:#31A2AC;text-align:center}
+.landing button.go{padding:12px 28px;background:#31A2AC;color:white;border:none;border-radius:12px;font-size:1.05em;font-weight:700;cursor:pointer;margin-top:12px;display:block;margin-left:auto;margin-right:auto}
+.landing button.go:active{background:#278a93}
+.disc{margin-top:30px;text-align:left;background:#fde8e8;border-left:4px solid #AF1C1C;border-radius:8px;padding:14px 16px}
+.disc p{font-size:.84em;color:#2F2F28}
+.th{text-align:center;padding:12px;margin:24px 0 12px;border-radius:12px;font-weight:700;font-size:1.1em}
+.t1{background:#d4f0f3;color:#1a7a82}
+.t2{background:#fde0e0;color:#AF1C1C}
+.t3{background:#e8e8e5;color:#2F2F28}
+.cd{background:#fff;border-radius:14px;margin:10px 0;padding:18px;box-shadow:0 1px 8px rgba(0,0,0,.07);transition:opacity .3s}
+.cd.now{border:3px solid #31A2AC;box-shadow:0 2px 16px rgba(49,162,172,.25)}
+.cd.past{opacity:.55}
+.now-badge{background:#31A2AC;color:white;font-size:.75em;padding:3px 10px;border-radius:10px;display:inline-block;margin-bottom:8px;font-weight:700}
+.tp{display:flex;align-items:center;gap:14px}
+.ic{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ic svg{width:36px;height:36px}
+.ti h2{font-size:1em;color:#31A2AC}
+.dt{font-size:.78em;color:#5a5a54;margin-top:1px}
+.sz{font-size:.82em;color:#AF1C1C;margin-top:2px}
+.fn{background:#fde8e8;border-radius:8px;padding:9px 12px;font-size:.84em;color:#AF1C1C;margin:12px 0 10px}
+.dv{font-size:.87em;margin-bottom:10px}
+.dv b{color:#31A2AC}
+.dv ul{margin:5px 0 0 18px}
+.dv li{margin-bottom:2px}
+.mm{font-size:.83em;color:#31A2AC;border-top:1px solid #e0f5f7;padding-top:10px}
+.sr{background:#fff;border-radius:14px;padding:20px;margin:24px 0;box-shadow:0 1px 8px rgba(0,0,0,.07)}
+.sr h2{color:#31A2AC;font-size:1em;margin-bottom:10px}
+.sr li{font-size:.82em;margin-bottom:5px}
+.sr a{color:#31A2AC}
+.sr ul{margin-left:16px}
+.share-box{background:#fff;border-radius:14px;padding:16px;margin:16px 0;box-shadow:0 1px 8px rgba(0,0,0,.07);text-align:center}
+.share-box .share-label{font-size:.82em;color:#5a5a54;margin-bottom:8px}
+.share-url-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.share-url{flex:1;padding:10px 12px;border:2px solid #89d0d6;border-radius:10px;font-size:.82em;color:#2F2F28;background:#F0EFFE;word-break:break-all;text-align:left;font-family:monospace;cursor:pointer}
+.share-url:active{background:#e0f5f7}
+.share-box button{padding:8px 20px;background:#31A2AC;color:white;border:none;border-radius:10px;font-size:.85em;cursor:pointer;font-weight:600;white-space:nowrap}
+.share-box button:active{background:#278a93}
+.share-msg{color:#31A2AC;font-size:.85em;margin-top:6px}
+.share-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.share-btns a{display:inline-flex;align-items:center;gap:4px;padding:6px 14px;border-radius:8px;font-size:.8em;text-decoration:none;color:white;font-weight:600}
+.share-wa{background:#25D366}
+.share-tg{background:#0088cc}
+.share-mail{background:#666}
+.footer{text-align:center;padding:20px 10px 10px;font-size:.8em;color:#6a6a64}
+.footer a{color:#31A2AC}
+#guide{display:none}
+</style>
+</head>
+<body>
+<div class="c">
+<div class="hd">
+<h1 id="pageTitle"></h1>
+<p id="pageSubtitle"></p>
+</div>
+<div class="lang-switch" id="langSwitch"></div>
+
+<div id="landing" class="landing">
+<h2 id="landingTitle"></h2>
+<p id="landingDesc"></p>
+<input type="date" id="etInput">
+<button class="go" onclick="startGuide()" id="landingBtn"></button>
+<div class="disc"><p id="landingDisc"></p></div>
+</div>
+
+<div id="guide">
+<div class="et" id="etBanner"></div>
+<div id="countdown"></div>
+<div class="share-box">
+<div class="share-label" id="shareLabel"></div>
+<div class="share-url-row">
+<div class="share-url" id="shareUrl" onclick="shareLink()"></div>
+<button onclick="shareLink()" id="shareBtn"></button>
+</div>
+<div class="share-btns" id="shareBtns"></div>
+<div class="share-msg" id="shareMsg"></div>
+</div>
+<div class="th t1" id="triHead1"></div>
+<div id="cards-t1"></div>
+<div class="th t2" id="triHead2"></div>
+<div id="cards-t2"></div>
+<div class="th t3" id="triHead3"></div>
+<div id="cards-t3"></div>
+
+<div class="sr" style="background:#fde8e8;border-left:4px solid #AF1C1C">
+<h2 style="color:#AF1C1C" id="discTitle"></h2>
+<p style="font-size:.84em;color:#2F2F28" id="discText"></p>
+</div>
+
+<div class="sr">
+<h2 id="srcTitle"></h2>
+<ul>
+<li><a href="https://www.familienplanung.de">familienplanung.de</a> – BZgA</li>
+<li><a href="https://www.embryotox.de">Embryotox</a> – Charit&eacute; Berlin</li>
+<li><a href="https://www.acog.org/womens-health/pregnancy">ACOG</a> – Am. College of OB-GYN</li>
+<li><a href="https://www.nhs.uk/pregnancy/week-by-week/">NHS UK</a> – Week-by-week Guide</li>
+<li><a href="https://my.clevelandclinic.org/health/articles/7247-fetal-development">Cleveland Clinic</a> – Fetal Development</li>
+<li>Moore, Persaud &amp; Torchia: <em>The Developing Human</em>, 11th Ed., Elsevier 2020</li>
+</ul>
+</div>
+
+<div class="footer" id="footer"></div>
+</div>
+</div>
+
+<script>
+// ============================================================
+// TRANSLATIONS
+// To add a new language: add a key (e.g. "fr") to L and W_LANG
+// ============================================================
+var LANGS=['de','en'];
+
+var L={
+de:{
+  flag:'🇩🇪',label:'Deutsch',
+  title:'\ud83e\udd30 Schwangerschafts-Guide',
+  subtitle:'Vom Mohnkorn zur Wassermelone',
+  landTitle:'Wann ist dein errechneter Termin?',
+  landDesc:'Gib den ET ein und erhalte deinen personalisierten Wochen-Guide!',
+  landBtn:'Los geht\u2019s! \ud83d\ude80',
+  landDisc:'\u26a0\ufe0f <b>Hinweis:</b> Dies ist <b>keine medizinische Beratung</b>. Alle Angaben sind sorgf\u00e4ltig recherchiert, aber ohne Gew\u00e4hr. Die Informationen ersetzen nicht den Besuch bei \u00c4rztin/Arzt oder Hebamme.',
+  etBanner:'\ud83d\udcc5 Errechneter Termin: <b>%s</b>',
+  countdownTpl:'\ud83d\udc76 SSW %ssw%+%d% \u2022 Noch <b>%w% Wochen und %d2% Tage</b> bis zum ET!',
+  countdownDone:'\ud83c\udf89 Der errechnete Termin ist da (oder schon vorbei)! Alles Gute!',
+  nowBadge:'\ud83d\udc49 IHR SEID HIER! (SSW %ssw%+%d%)',
+  shareLabel:'Teile diesen Guide mit anderen werdenden Eltern:',
+  shareBtn:'\ud83d\udccb Kopieren',
+  shareCopied:'Link kopiert! \u2705',
+  shareWa:'WhatsApp',
+  shareTg:'Telegram',
+  shareMail:'E-Mail',
+  shareText:'Schau mal \u2013 ein toller Schwangerschafts-Guide! \ud83e\udd30',
+  tri1:'\ud83c\udf31 1. Trimester (Woche 1\u201312)',
+  tri2:'\ud83c\udf3b 2. Trimester (Woche 13\u201327)',
+  tri3:'\ud83c\udf7c 3. Trimester (Woche 28\u201340)',
+  weekLabel:'SSW',
+  devLabel:'\ud83d\udc76 Entwicklung:',
+  mamaLabel:'\ud83d\udc69 Mama:',
+  discTitle:'\u26a0\ufe0f Hinweis',
+  discText:'Dies ist <b>keine medizinische Beratung</b>. Alle Angaben sind sorgf\u00e4ltig recherchiert, aber ohne Gew\u00e4hr. Die Informationen ersetzen nicht den Besuch bei \u00c4rztin/Arzt oder Hebamme. Jede Schwangerschaft ist individuell \u2013 bei Fragen oder Beschwerden wende dich an medizinisches Fachpersonal.',
+  srcTitle:'\ud83d\udcda Quellen',
+  footer:'Made with \u2764\ufe0f f\u00fcr werdende Eltern \u00b7 <a href="https://github.com/Hubref/ssw-guide">GitHub</a> \u00b7 MIT Lizenz',
+  months:['Jan','Feb','M\u00e4r','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez']
+},
+en:{
+  flag:'🇬🇧',label:'English',
+  title:'\ud83e\udd30 Pregnancy Week Guide',
+  subtitle:'From poppy seed to watermelon',
+  landTitle:'When is your due date?',
+  landDesc:'Enter your due date and get your personalized week-by-week guide!',
+  landBtn:'Let\u2019s go! \ud83d\ude80',
+  landDisc:'\u26a0\ufe0f <b>Note:</b> This is <b>not medical advice</b>. All information is carefully researched but provided without warranty. It does not replace a visit to your doctor or midwife.',
+  etBanner:'\ud83d\udcc5 Due Date: <b>%s</b>',
+  countdownTpl:'\ud83d\udc76 Week %ssw%+%d% \u2022 <b>%w% weeks and %d2% days</b> to go!',
+  countdownDone:'\ud83c\udf89 Your due date is here (or has passed)! All the best!',
+  nowBadge:'\ud83d\udc49 YOU ARE HERE! (Week %ssw%+%d%)',
+  shareLabel:'Share this guide with other expecting parents:',
+  shareBtn:'\ud83d\udccb Copy',
+  shareCopied:'Link copied! \u2705',
+  shareWa:'WhatsApp',
+  shareTg:'Telegram',
+  shareMail:'Email',
+  shareText:'Check this out \u2013 a great pregnancy week guide! \ud83e\udd30',
+  tri1:'\ud83c\udf31 1st Trimester (Weeks 1\u201312)',
+  tri2:'\ud83c\udf3b 2nd Trimester (Weeks 13\u201327)',
+  tri3:'\ud83c\udf7c 3rd Trimester (Weeks 28\u201340)',
+  weekLabel:'Week',
+  devLabel:'\ud83d\udc76 Development:',
+  mamaLabel:'\ud83d\udc69 Mum:',
+  discTitle:'\u26a0\ufe0f Disclaimer',
+  discText:'This is <b>not medical advice</b>. All information has been carefully researched but is provided without warranty. It does not replace professional medical consultation. Every pregnancy is unique \u2013 consult your healthcare provider with any questions or concerns.',
+  srcTitle:'\ud83d\udcda Sources',
+  footer:'Made with \u2764\ufe0f for expecting parents \u00b7 <a href="https://github.com/Hubref/ssw-guide">GitHub</a> \u00b7 MIT License',
+  months:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+}
+};
+
+// ============================================================
+// WEEK DATA – per language
+// ============================================================
+var W_LANG={
+de:[
+{w:1,n:"Zyklusbeginn",sz:"noch winzig",cl:"#fce4ec",svg:'<circle cx="20" cy="20" r="16" fill="#fce4ec"/><text x="20" y="26" text-anchor="middle" font-size="18">\u2728</text>',fun:"Technisch noch nicht schwanger \u2013 der Countdown beginnt ab dem 1. Tag der letzten Periode!",dev:["Berechnung startet ab dem 1. Tag der letzten Menstruation","K\u00f6rper bereitet sich auf den Eisprung vor"],mama:"Fols\u00e4ure nehmen! 400\u00b5g t\u00e4glich empfohlen."},
+{w:2,n:"Eisprung",sz:"noch winzig",cl:"#fff8e1",svg:'<circle cx="20" cy="20" r="14" fill="#fff9c4"/><circle cx="20" cy="20" r="6" fill="#ffecb3" stroke="#fdd835" stroke-width="1"/>',fun:"Das Ei wartet geduldig im VIP-Bereich des Eileiters.",dev:["Eisprung findet statt","Eizelle ist 12\u201324h befruchtungsf\u00e4hig","Spermien \u00fcberleben bis zu 5 Tage"],mama:"Die fruchtbaren Tage \u2013 jetzt z\u00e4hlt\u2019s!"},
+{w:3,n:"Befruchtung",sz:"0,1 mm \u2013 Sandkorn",cl:"#fce4ec",svg:'<circle cx="20" cy="20" r="3" fill="#e91e63"/><circle cx="20" cy="20" r="8" fill="none" stroke="#f48fb1" stroke-width="1" stroke-dasharray="2,2"/>',fun:"Von 200 Mio. Spermien schafft es genau eins. Talk about Casting!",dev:["Befruchtung der Eizelle","Zellteilung beginnt sofort","Zygote wandert zur Geb\u00e4rmutter","Geschlecht steht bereits fest!"],mama:"Noch keine Symptome sp\u00fcrbar."},
+{w:4,n:"Einnistung",sz:"1 mm \u2013 Mohnkorn",cl:"#f3e5f5",svg:'<circle cx="20" cy="20" r="4" fill="#4a148c"/>',fun:"Kleiner als ein Punkt am Satzende \u2013 aber schon ein Organisationstalent!",dev:["Einnistung in die Geb\u00e4rmutterschleimhaut","hCG-Produktion beginnt","Fruchth\u00f6hle bildet sich"],mama:"Schwangerschaftstest kann positiv werden!"},
+{w:5,n:"Herzschlag!",sz:"2 mm \u2013 Sesamkorn",cl:"#fce4ec",svg:'<ellipse cx="20" cy="20" rx="5" ry="4" fill="#ffcdd2"/><path d="M16 18 Q20 12 24 18" stroke="#e53935" fill="none" stroke-width="1.5"/>',fun:"So gro\u00df wie ein Sesamkorn \u2013 aber mit Herzschlag!",dev:["Herz beginnt zu schlagen","Neuralrohr bildet sich (Gehirn & R\u00fcckenmark)","Erste Blutgef\u00e4\u00dfe entstehen"],mama:"\u00dcbelkeit kann starten. M\u00fcdigkeit macht sich breit."},
+{w:6,n:"Seepferdchen",sz:"4\u20136 mm \u2013 Linse",cl:"#e8f5e9",svg:'<path d="M20 10 Q28 15 25 22 Q22 28 18 30 Q15 28 16 24 Q12 18 20 10Z" fill="#a5d6a7"/><circle cx="22" cy="16" r="1" fill="#333"/>',fun:"Sieht aus wie ein kleines Seepferdchen!",dev:["Arm- und Beinknospen sichtbar","Augenbecher bilden sich","Herz schl\u00e4gt ca. 110x/min","Leber und Nieren formen sich"],mama:"Morgen\u00fcbelkeit (die leider ganzt\u00e4gig sein kann)."},
+{w:7,n:"Gesichtsz\u00fcge",sz:"1 cm \u2013 Blaubeere",cl:"#e8eaf6",svg:'<circle cx="20" cy="20" r="8" fill="#5c6bc0"/><circle cx="20" cy="20" r="6" fill="#7986cb"/>',fun:"So gro\u00df wie eine Blaubeere \u2013 10.000x gr\u00f6\u00dfer als bei der Befruchtung!",dev:["Gesichtsz\u00fcge erkennbar","Gehirn w\u00e4chst rasant","H\u00e4nde wie kleine Paddel"],mama:"H\u00e4ufiger Harndrang."},
+{w:8,n:"Kleine Finger",sz:"1,6 cm \u2013 Himbeere",cl:"#fce4ec",svg:'<circle cx="16" cy="16" r="4" fill="#e91e63"/><circle cx="24" cy="16" r="4" fill="#ec407a"/><circle cx="20" cy="22" r="4" fill="#f06292"/><circle cx="14" cy="22" r="3" fill="#f48fb1"/><circle cx="26" cy="22" r="3" fill="#f48fb1"/>',fun:"Winzige Schwimmh\u00e4ute zwischen den Fingern \u2013 wie ein kleiner Frosch!",dev:["Finger und Zehen trennen sich","Augenlider bilden sich","Alle wichtigen Organe angelegt","Erste Muskelbewegungen"],mama:"\u00dcbelkeit oft am st\u00e4rksten."},
+{w:9,n:"Jetzt F\u00f6tus!",sz:"2,3 cm \u2013 Kirsche",cl:"#ffebee",svg:'<circle cx="20" cy="22" r="8" fill="#c62828"/><circle cx="20" cy="22" r="6" fill="#e53935"/><path d="M20 14 Q22 8 26 6" stroke="#388e3c" fill="none" stroke-width="2"/><ellipse cx="27" cy="6" rx="4" ry="2" fill="#4caf50"/>',fun:"Ab jetzt hei\u00dft es \u2018F\u00f6tus\u2019 \u2013 Bef\u00f6rderung!",dev:["\u00dcbergang Embryo \u2192 F\u00f6tus","Schwanz verschwunden","Geschlechtsorgane entwickeln sich","Knorpelskelett bildet sich"],mama:"Blutvolumen steigt."},
+{w:10,n:"Purzelb\u00e4ume",sz:"3 cm \u2013 Erdbeere",cl:"#ffebee",svg:'<path d="M14 14 Q20 8 26 14 L24 28 Q20 32 16 28Z" fill="#e53935"/><circle cx="18" cy="18" r="1" fill="#ffcdd2"/><circle cx="22" cy="20" r="1" fill="#ffcdd2"/>',fun:"Kann schon Purzelb\u00e4ume schlagen \u2013 du sp\u00fcrst es nur noch nicht!",dev:["Erste unkontrollierte Bewegungen","Z\u00e4hne bilden sich im Kiefer","Nieren produzieren Urin","Fingerabdr\u00fccke werden angelegt"],mama:"Venen k\u00f6nnen sichtbarer werden."},
+{w:11,n:"G\u00e4hnen!",sz:"4 cm \u2013 Feige",cl:"#e8f5e9",svg:'<ellipse cx="20" cy="22" rx="9" ry="10" fill="#7b1fa2"/><ellipse cx="20" cy="22" rx="7" ry="8" fill="#9c27b0"/>',fun:"Kann jetzt g\u00e4hnen. In Woche 11. Relatable!",dev:["Kann g\u00e4hnen und schlucken","Haarfollikel bilden sich","Fingern\u00e4gel wachsen"],mama:"\u00dcbelkeit l\u00e4sst bei vielen nach."},
+{w:12,n:"Rohbau fertig!",sz:"5,5 cm \u2013 Limette",cl:"#e8f5e9",svg:'<circle cx="20" cy="20" r="12" fill="#66bb6a"/><circle cx="20" cy="20" r="9" fill="#81c784"/>',fun:"Alle Organe angelegt \u2013 ab jetzt nur noch wachsen!",dev:["Reflexe entwickeln sich","Stimmb\u00e4nder bilden sich","Knochenmark produziert wei\u00dfe Blutk\u00f6rperchen","Fehlgeburtsrisiko sinkt deutlich"],mama:"Oft der Zeitpunkt f\u00fcr die Verk\u00fcndung! Energielevel steigt."},
+{w:13,n:"2. Trimester!",sz:"7 cm \u2013 Kiwi",cl:"#e8f5e9",svg:'<ellipse cx="20" cy="20" rx="10" ry="11" fill="#795548"/><ellipse cx="20" cy="20" rx="8" ry="9" fill="#8bc34a"/><circle cx="18" cy="18" r="1" fill="#333"/><circle cx="22" cy="21" r="1" fill="#333"/>',fun:"Einzigartige Fingerabdr\u00fccke wie eine Schneeflocke!",dev:["Stimmb\u00e4nder fertig","Darm wandert in den Bauch","Schluckt und scheidet Fruchtwasser aus"],mama:"Honeymoon-Phase der Schwangerschaft! Mehr Energie."},
+{w:14,n:"Grimassen",sz:"8,5 cm \u2013 Zitrone",cl:"#fffde7",svg:'<ellipse cx="20" cy="20" rx="11" ry="10" fill="#fdd835"/><ellipse cx="20" cy="20" rx="9" ry="8" fill="#ffee58"/>',fun:"Kann Grimassen schneiden \u2013 \u00fcbt f\u00fcr die Teenagerzeit!",dev:["Gesichtsmuskeln aktiv","Lanugo-Haar bedeckt den K\u00f6rper","Leber produziert Galle"],mama:"Babybauch wird sichtbar. Appetit kehrt zur\u00fcck!"},
+{w:15,n:"Daumenlutscher",sz:"10 cm \u2013 Orange",cl:"#fff3e0",svg:'<circle cx="20" cy="20" r="13" fill="#ff9800"/><circle cx="20" cy="20" r="10" fill="#ffb74d"/>',fun:"Kann hell/dunkel unterscheiden \u2013 obwohl die Augen geschlossen sind!",dev:["Lichtempfindlichkeit","Knochen werden h\u00e4rter","Lutscht am Daumen","Geschmacksknospen entwickeln sich"],mama:"Schwangerschafts-Glow!"},
+{w:16,n:"H\u00f6ren lernen",sz:"12 cm \u2013 Avocado",cl:"#e8f5e9",svg:'<ellipse cx="20" cy="22" rx="10" ry="13" fill="#558b2f"/><ellipse cx="20" cy="22" rx="8" ry="10" fill="#7cb342"/><circle cx="20" cy="26" r="5" fill="#795548"/>',fun:"Augen bewegen sich unter den Lidern \u2013 REM-Schlaf-Training!",dev:["Muskulatur wird st\u00e4rker","Kann Ger\u00e4usche wahrnehmen","Nabelschnur voll ausgebildet"],mama:"Vielleicht erste \u2018Schmetterlinge\u2019 im Bauch!"},
+{w:17,n:"Fettpolster",sz:"13 cm \u2013 Birne",cl:"#f1f8e9",svg:'<path d="M20 6 Q26 6 28 14 Q30 24 24 32 Q20 36 16 32 Q10 24 12 14 Q14 6 20 6Z" fill="#c0ca33"/>',fun:"Beginnt Fettreserven anzulegen \u2013 Winterspeck deluxe!",dev:["Braunes Fettgewebe bildet sich","Schwei\u00dfdr\u00fcsen entwickeln sich","Skelett: Knorpel \u2192 Knochen"],mama:"Gleichgewichtssinn ver\u00e4ndert sich."},
+{w:18,n:"Baby h\u00f6rt dich!",sz:"14 cm \u2013 Paprika",cl:"#ffebee",svg:'<path d="M14 8 Q10 8 10 16 L12 32 Q14 34 16 32 L18 32 Q22 34 24 32 L26 32 Q28 34 30 32 L30 16 Q30 8 26 8 Q20 4 14 8Z" fill="#f44336"/>',fun:"Kann deine Stimme h\u00f6ren! Also aufpassen, was du sagst!",dev:["Ohren funktionsf\u00e4hig","Reagiert auf laute Ger\u00e4usche","Myelin bildet sich um Nerven"],mama:"Kindsbewegungen deutlicher. Geschlecht evtl. im Ultraschall!"},
+{w:19,n:"K\u00e4seschmiere",sz:"15 cm \u2013 Mango",cl:"#fff8e1",svg:'<ellipse cx="20" cy="20" rx="11" ry="14" fill="#ff8f00"/><ellipse cx="20" cy="20" rx="9" ry="12" fill="#ffb300"/>',fun:"Wird mit Vernix \u00fcberzogen \u2013 nat\u00fcrliche Bodylotion de luxe!",dev:["Vernix caseosa sch\u00fctzt die Haut","Spezialisierte Gehirnareale f\u00fcr Sinne","Haare wachsen auf dem Kopf"],mama:"H\u00fcftschmerzen m\u00f6glich. Halbzeit naht!"},
+{w:20,n:"HALBZEIT!",sz:"25 cm \u2013 Banane",cl:"#fffde7",svg:'<path d="M10 30 Q8 20 14 12 Q18 8 22 10 Q26 12 24 22 Q22 30 10 30Z" fill="#fdd835"/>',fun:"HALBZEIT! Ab jetzt wird von Kopf bis Fu\u00df gemessen!",dev:["Schlaf-Wach-Rhythmus entwickelt sich","Kann schlucken, saugen, greifen","Schmeckt Fruchtwasser"],mama:"Gro\u00dfer Ultraschall (Organscreening)."},
+{w:21,n:"Akrobat",sz:"27 cm \u2013 gro\u00dfe Karotte",cl:"#fff3e0",svg:'<path d="M20 4 L24 34 Q20 38 16 34Z" fill="#ff9800"/>',fun:"Bewegt sich ca. 50x pro Stunde \u2013 mehr als du heute!",dev:["Koordinierte Bewegungsmuster","Augenbrauen und Wimpern wachsen","Mekonium bildet sich"],mama:"Partner kann Tritte f\u00fchlen! Sodbrennen m\u00f6glich."},
+{w:22,n:"Tastsinn",sz:"28 cm \u2013 Maiskolben",cl:"#fffde7",svg:'<ellipse cx="20" cy="20" rx="8" ry="14" fill="#fdd835"/><line x1="12" y1="14" x2="12" y2="26" stroke="#388e3c" stroke-width="2"/><line x1="28" y1="14" x2="28" y2="26" stroke="#388e3c" stroke-width="2"/>',fun:"Erkundet den eigenen K\u00f6rper durch Tasten \u2013 Self-Discovery!",dev:["Tastsinn voll entwickelt","Greift nach der Nabelschnur","Lungenentwicklung schreitet voran"],mama:"Dehnungsstreifen m\u00f6glich. Linea nigra wird sichtbar."},
+{w:23,n:"Mini-Baby",sz:"29 cm \u2013 Aubergine",cl:"#e8eaf6",svg:'<ellipse cx="20" cy="22" rx="9" ry="13" fill="#4a148c"/><ellipse cx="20" cy="22" rx="7" ry="11" fill="#6a1b9a"/>',fun:"Sieht aus wie ein Mini-Neugeborenes \u2013 nur d\u00fcnn und schrumpelig!",dev:["Proportionen wie Neugeborenes","Schnelle Gewichtszunahme","Lunge bildet Surfactant"],mama:"Geschwollene Kn\u00f6chel normal. \u00dcbungswehen m\u00f6glich."},
+{w:24,n:"Lebensf\u00e4hig!",sz:"30 cm",cl:"#e3f2fd",svg:'<circle cx="20" cy="20" r="14" fill="#42a5f5"/><circle cx="20" cy="20" r="10" fill="#64b5f6"/><text x="20" y="25" text-anchor="middle" font-size="11" fill="white" font-weight="bold">24</text>',fun:"Ab jetzt \u2018lebensf\u00e4hig\u2019 au\u00dferhalb \u2013 ein Meilenstein!",dev:["Grenze der Lebensf\u00e4higkeit","Surfactant-Produktion","Gleichgewichtssinn funktioniert"],mama:"Zuckertest (Gestationsdiabetes). R\u00fcckenschmerzen h\u00e4ufig."},
+{w:25,n:"Starker Griff",sz:"35 cm \u2013 Blumenkohl",cl:"#f1f8e9",svg:'<circle cx="15" cy="15" r="6" fill="#e8f5e9"/><circle cx="25" cy="15" r="6" fill="#c8e6c9"/><circle cx="20" cy="22" r="7" fill="#a5d6a7"/><circle cx="13" cy="23" r="5" fill="#c8e6c9"/><circle cx="27" cy="23" r="5" fill="#e8f5e9"/>',fun:"Erstaunlich fester Griff \u2013 k\u00f6nnte dich am Finger festhalten!",dev:["Nervensystem reift schnell","Nasenl\u00f6cher \u00f6ffnen sich","Reagiert auf Ber\u00fchrung von au\u00dfen"],mama:"Schlafprobleme h\u00e4ufiger."},
+{w:26,n:"Augen auf!",sz:"36 cm",cl:"#e8eaf6",svg:'<circle cx="20" cy="20" r="14" fill="#ffcc80"/><circle cx="16" cy="17" r="3" fill="white"/><circle cx="24" cy="17" r="3" fill="white"/><circle cx="16" cy="17" r="1.5" fill="#5d4037"/><circle cx="24" cy="17" r="1.5" fill="#5d4037"/><path d="M17 24 Q20 27 23 24" stroke="#e91e63" fill="none" stroke-width="1.5"/>',fun:"\u00d6ffnet zum ersten Mal die Augen! Hallo Welt!",dev:["Augen \u00f6ffnen sich erstmals","Kann blinzeln","Immunsystem nimmt Antik\u00f6rper auf"],mama:"Linke Seitenlage zum Schlafen empfohlen."},
+{w:27,n:"Tr\u00e4umen",sz:"37 cm \u2013 Kokosnuss",cl:"#efebe9",svg:'<circle cx="20" cy="20" r="13" fill="#795548"/><circle cx="20" cy="20" r="10" fill="#8d6e63"/><circle cx="20" cy="24" r="4" fill="#d7ccc8"/>',fun:"Kann jetzt tr\u00e4umen! Wovon wohl? Fruchtwasser-Poolpartys?",dev:["REM-Schlaf nachweisbar","Lunge \u00fcbt Atembewegungen","Kann Stimmen unterscheiden"],mama:"Ende 2. Trimester! Wassereinlagerungen h\u00e4ufig."},
+{w:28,n:"3. Trimester!",sz:"38 cm",cl:"#e3f2fd",svg:'<circle cx="20" cy="20" r="15" fill="#90caf9"/><text x="20" y="25" text-anchor="middle" font-size="10" fill="#1565c0" font-weight="bold">T3</text>',fun:"Kann die Augen in alle Richtungen drehen \u2013 voller Durchblick!",dev:["3. Trimester beginnt!","REM-Schlaf: 80% der Schlafzeit","Milliarden Neuronen","\u00dcberlebensrate bei Fr\u00fchgeburt: >90%"],mama:"Anti-D bei Rh-negativ. H\u00e4ufigere Kontrollen."},
+{w:29,n:"Platzmangel",sz:"39 cm \u2013 K\u00fcrbis",cl:"#fff3e0",svg:'<ellipse cx="20" cy="22" rx="14" ry="12" fill="#ff9800"/><ellipse cx="20" cy="22" rx="12" ry="10" fill="#ffb74d"/>',fun:"Es wird eng! Wie Tetris spielen in einer Schneekugel!",dev:["Muskeln und Lunge reifen","Knochen fertig aber noch weich","Speichert Eisen, Calcium, Phosphor"],mama:"Kurzatmigkeit durch Zwerchfelldruck."},
+{w:30,n:"Anti-Aging",sz:"40 cm, ~1,3 kg",cl:"#fce4ec",svg:'<ellipse cx="20" cy="20" rx="13" ry="14" fill="#66bb6a"/><path d="M12 14 Q20 10 28 14" stroke="#388e3c" fill="none" stroke-width="1"/><path d="M12 20 Q20 16 28 20" stroke="#388e3c" fill="none" stroke-width="1"/>',fun:"Lanugo-Haar f\u00e4llt aus \u2013 erstes Anti-Aging-Programm!",dev:["Temperaturregulation verbessert sich","Lanugo verschwindet","Ca. 1,3 kg schwer"],mama:"M\u00fcdigkeit kehrt zur\u00fcck. H\u00e4ufiger Harndrang."},
+{w:31,n:"Alle 5 Sinne!",sz:"41 cm",cl:"#e8eaf6",svg:'<circle cx="20" cy="20" r="14" fill="#b39ddb"/><circle cx="15" cy="17" r="2" fill="white"/><circle cx="25" cy="17" r="2" fill="white"/><circle cx="15" cy="17" r="1" fill="#311b92"/><circle cx="25" cy="17" r="1" fill="#311b92"/><path d="M16 25 Q20 28 24 25" stroke="white" fill="none" stroke-width="1.5"/>',fun:"Alle 5 Sinne funktionieren!",dev:["Alle Sinne aktiv","Pupillen reagieren auf Licht","Gehirnverbindungen rasant"],mama:"\u00dcbungswehen st\u00e4rker. Geburtsvorbereitungskurs!"},
+{w:32,n:"Unterwasser-Yoga",sz:"42 cm \u2013 Honigmelone",cl:"#f1f8e9",svg:'<ellipse cx="20" cy="20" rx="15" ry="13" fill="#aed581"/><ellipse cx="20" cy="20" rx="13" ry="11" fill="#c5e1a5"/>',fun:"\u00dcbt Atmen mit Fruchtwasser \u2013 wie Unterwasser-Yoga!",dev:["Lunge \u00fcbt intensiv","Zehenn\u00e4gel gewachsen","Haut wird glatter"],mama:"Beckenboden\u00fcbungen! Viele Babys drehen in Kopflage."},
+{w:33,n:"Immunboost",sz:"43 cm \u2013 Ananas",cl:"#fffde7",svg:'<path d="M14 16 Q12 34 20 36 Q28 34 26 16Z" fill="#fdd835"/><path d="M14 16 Q17 12 20 16 Q23 12 26 16" fill="#388e3c"/><path d="M12 14 Q15 8 18 14" fill="#4caf50"/><path d="M22 14 Q25 8 28 14" fill="#4caf50"/>',fun:"Antik\u00f6rper von Mama \u2013 kostenloses Immunsystem-Startpaket!",dev:["Antik\u00f6rpertransfer verst\u00e4rkt","Knochen h\u00e4rter (au\u00dfer Sch\u00e4del!)","Schlaf regulierter"],mama:"Mutterschutz bald! Kliniktasche packen!"},
+{w:34,n:"Vernix Maximum",sz:"45 cm",cl:"#fff8e1",svg:'<circle cx="20" cy="20" r="14" fill="#ffe0b2"/><circle cx="20" cy="20" r="11" fill="#ffecb3"/>',fun:"K\u00e4seschmiere am Maximum \u2013 wie ein eingecremtes Michelin-M\u00e4nnchen!",dev:["Vernix am dicksten","Fingern\u00e4gel an den Spitzen","Lunge fast reif"],mama:"Senkwehen k\u00f6nnen einsetzen."},
+{w:35,n:"Nieren fertig",sz:"46 cm",cl:"#e3f2fd",svg:'<path d="M14 12 Q10 20 14 28 Q18 32 20 28 Q22 32 26 28 Q30 20 26 12 Q20 8 14 12Z" fill="#ef9a9a"/>',fun:"Produziert ca. 500ml Urin/Tag ins Fruchtwasser. Recycling!",dev:["Nieren voll ausgereift","Leber verarbeitet Abfallprodukte","Gehirngewicht steigt um 1/3"],mama:"Damm-Massage empfohlen."},
+{w:36,n:"Startposition",sz:"47 cm",cl:"#e8f5e9",svg:'<circle cx="20" cy="28" r="10" fill="#ffcc80"/><circle cx="16" cy="26" r="2" fill="white"/><circle cx="24" cy="26" r="2" fill="white"/><circle cx="16" cy="26" r="1" fill="#333"/><circle cx="24" cy="26" r="1" fill="#333"/>',fun:"Die meisten Babys liegen kopf\u00fcber \u2013 bereit f\u00fcr den Abgang!",dev:["Meiste Babys in Sch\u00e4dellage","Sch\u00e4delknochen verschiebbar","Mekonium angesammelt"],mama:"W\u00f6chentliche Vorsorge. GBS-Abstrich."},
+{w:37,n:"Fast da!",sz:"48 cm, ~2,9 kg",cl:"#e8eaf6",svg:'<circle cx="20" cy="20" r="15" fill="#ce93d8"/><text x="20" y="25" text-anchor="middle" font-size="10" fill="white" font-weight="bold">37</text>',fun:"Offiziell \u2018early term\u2019 \u2013 k\u00f6nnte jederzeit fit kommen!",dev:["Fr\u00fch termingerecht","Greifreflex stark","Genug Surfactant","Ca. 2,9 kg"],mama:"Schleimpfropf kann abgehen. Nestbautrieb!"},
+{w:38,n:"Bereit!",sz:"49 cm",cl:"#fff3e0",svg:'<circle cx="20" cy="20" r="15" fill="#ffb74d"/><circle cx="15" cy="17" r="2.5" fill="white"/><circle cx="25" cy="17" r="2.5" fill="white"/><circle cx="15" cy="17" r="1.2" fill="#333"/><circle cx="25" cy="17" r="1.2" fill="#333"/><path d="M16 25 Q20 29 24 25" stroke="#333" fill="none" stroke-width="1.5"/>',fun:"Erster Poop (Mekonium) ist geladen. Eltern, ihr seid gewarnt!",dev:["Alle Organe funktionsf\u00e4hig","Weint erstmal ohne Tr\u00e4nen","Bauchumfang \u2248 Kopfumfang"],mama:"Geburtsanzeichen beachten: Wehen, Blasensprung."},
+{w:39,n:"Endspurt",sz:"50 cm",cl:"#e3f2fd",svg:'<circle cx="20" cy="20" r="16" fill="#90caf9"/><circle cx="20" cy="20" r="12" fill="#bbdefb"/>',fun:"Gehirn 30% gr\u00f6\u00dfer als vor 4 Wochen \u2013 letzter Spurt!",dev:["Gehirn entwickelt sich rasant","Lunge bereit f\u00fcr ersten Atemzug","Plazenta gibt Antik\u00f6rper ab"],mama:"Geduld... oder Himbeerbl\u00e4ttertee!"},
+{w:40,n:"Geburtstermin!",sz:"51 cm, ~3,4 kg \u2013 Wassermelone!",cl:"#e8f5e9",svg:'<ellipse cx="20" cy="20" rx="17" ry="15" fill="#43a047"/><path d="M6 20 Q13 14 20 20 Q27 26 34 20" stroke="#2e7d32" fill="none" stroke-width="2"/><path d="M6 20 Q13 26 20 20 Q27 14 34 20" stroke="#2e7d32" fill="none" stroke-width="2"/>',fun:"Vom Mohnkorn zur Wassermelone in 40 Wochen!",dev:["Voll entwickelt und bereit","Sch\u00e4delknochen verschiebbar","Reflexe: Saugen, Greifen, Moro"],mama:"Willkommen auf der Welt, kleines Wunder!"}
+],
+en:[
+{w:1,n:"Cycle Start",sz:"still tiny",cl:"#fce4ec",fun:"Not technically pregnant yet \u2013 the countdown starts from the first day of the last period!",dev:["Calculation starts from 1st day of last menstruation","Body prepares for ovulation"],mama:"Start folic acid! 400\u00b5g daily recommended."},
+{w:2,n:"Ovulation",sz:"still tiny",cl:"#fff8e1",fun:"The egg waits patiently in the VIP lounge of the fallopian tube.",dev:["Ovulation occurs","Egg is viable for 12\u201324 hours","Sperm can survive up to 5 days"],mama:"The fertile window \u2013 it\u2019s showtime!"},
+{w:3,n:"Fertilization",sz:"0.1 mm \u2013 grain of sand",cl:"#fce4ec",fun:"Out of 200 million sperm, exactly one makes it. Talk about casting!",dev:["Egg is fertilized","Cell division begins immediately","Zygote travels to the uterus","Sex is already determined!"],mama:"No symptoms yet."},
+{w:4,n:"Implantation",sz:"1 mm \u2013 poppy seed",cl:"#f3e5f5",fun:"Smaller than a period at the end of a sentence \u2013 but already an organizational genius!",dev:["Implantation into the uterine lining","hCG production begins","Gestational sac forms"],mama:"Pregnancy test may turn positive!"},
+{w:5,n:"Heartbeat!",sz:"2 mm \u2013 sesame seed",cl:"#fce4ec",fun:"The size of a sesame seed \u2013 but with a heartbeat!",dev:["Heart begins to beat","Neural tube forms (brain & spinal cord)","First blood vessels develop"],mama:"Nausea may start. Fatigue kicks in."},
+{w:6,n:"Seahorse",sz:"4\u20136 mm \u2013 lentil",cl:"#e8f5e9",fun:"Looks like a tiny seahorse!",dev:["Arm and leg buds visible","Eye cups forming","Heart beats ~110x/min","Liver and kidneys forming"],mama:"Morning sickness (that can last all day)."},
+{w:7,n:"Facial Features",sz:"1 cm \u2013 blueberry",cl:"#e8eaf6",fun:"The size of a blueberry \u2013 10,000x bigger than at fertilization!",dev:["Facial features recognizable","Brain growing rapidly","Hands like tiny paddles"],mama:"Frequent urination."},
+{w:8,n:"Tiny Fingers",sz:"1.6 cm \u2013 raspberry",cl:"#fce4ec",fun:"Tiny webbed fingers \u2013 like a little frog!",dev:["Fingers and toes separating","Eyelids forming","All major organs in place","First muscle movements"],mama:"Nausea often at its worst."},
+{w:9,n:"Now a Fetus!",sz:"2.3 cm \u2013 cherry",cl:"#ffebee",fun:"Officially a \u2018fetus\u2019 now \u2013 promotion!",dev:["Embryo \u2192 fetus transition","Tail is gone","Reproductive organs developing","Cartilage skeleton forming"],mama:"Blood volume increases."},
+{w:10,n:"Somersaults",sz:"3 cm \u2013 strawberry",cl:"#ffebee",fun:"Already doing somersaults \u2013 you just can\u2019t feel it yet!",dev:["First uncontrolled movements","Teeth forming in the jaw","Kidneys producing urine","Fingerprints being laid down"],mama:"Veins may become more visible."},
+{w:11,n:"Yawning!",sz:"4 cm \u2013 fig",cl:"#e8f5e9",fun:"Can yawn now. At week 11. Relatable!",dev:["Can yawn and swallow","Hair follicles forming","Fingernails growing"],mama:"Nausea easing for many."},
+{w:12,n:"Framework Done!",sz:"5.5 cm \u2013 lime",cl:"#e8f5e9",fun:"All organs in place \u2013 from now on it\u2019s just growing!",dev:["Reflexes developing","Vocal cords forming","Bone marrow producing white blood cells","Miscarriage risk drops significantly"],mama:"Often time to announce! Energy levels rising."},
+{w:13,n:"2nd Trimester!",sz:"7 cm \u2013 kiwi",cl:"#e8f5e9",fun:"Unique fingerprints like a snowflake!",dev:["Vocal cords complete","Intestines move into abdomen","Swallows and excretes amniotic fluid"],mama:"Honeymoon phase of pregnancy! More energy."},
+{w:14,n:"Grimaces",sz:"8.5 cm \u2013 lemon",cl:"#fffde7",fun:"Can make faces \u2013 practicing for the teenage years!",dev:["Facial muscles active","Lanugo hair covers the body","Liver produces bile"],mama:"Baby bump showing. Appetite returns!"},
+{w:15,n:"Thumb Sucker",sz:"10 cm \u2013 orange",cl:"#fff3e0",fun:"Can tell light from dark \u2013 with eyes still closed!",dev:["Light sensitivity","Bones getting harder","Sucks thumb","Taste buds developing"],mama:"Pregnancy glow!"},
+{w:16,n:"Learning to Hear",sz:"12 cm \u2013 avocado",cl:"#e8f5e9",fun:"Eyes moving under eyelids \u2013 REM sleep training!",dev:["Muscles getting stronger","Can perceive sounds","Umbilical cord fully formed"],mama:"Maybe first \u2018butterflies\u2019 in your belly!"},
+{w:17,n:"Fat Reserves",sz:"13 cm \u2013 pear",cl:"#f1f8e9",fun:"Starting to build fat reserves \u2013 winter padding deluxe!",dev:["Brown fat tissue forming","Sweat glands developing","Skeleton: cartilage \u2192 bone"],mama:"Balance may change."},
+{w:18,n:"Baby Hears You!",sz:"14 cm \u2013 bell pepper",cl:"#ffebee",fun:"Can hear your voice now! Watch what you say!",dev:["Ears functional","Reacts to loud sounds","Myelin forming around nerves"],mama:"Movements more noticeable. Gender may show on ultrasound!"},
+{w:19,n:"Vernix",sz:"15 cm \u2013 mango",cl:"#fff8e1",fun:"Coated in vernix \u2013 natural luxury body lotion!",dev:["Vernix caseosa protects the skin","Specialized brain areas for senses","Hair growing on the head"],mama:"Hip pain possible. Halfway there!"},
+{w:20,n:"HALFWAY!",sz:"25 cm \u2013 banana",cl:"#fffde7",fun:"HALFWAY! From now on measured head to toe!",dev:["Sleep-wake cycle developing","Can swallow, suck, grasp","Tastes amniotic fluid"],mama:"Anatomy scan (organ screening)."},
+{w:21,n:"Acrobat",sz:"27 cm \u2013 large carrot",cl:"#fff3e0",fun:"Moves about 50 times per hour \u2013 more than you today!",dev:["Coordinated movement patterns","Eyebrows and eyelashes growing","Meconium forming"],mama:"Partner can feel kicks! Heartburn possible."},
+{w:22,n:"Touch",sz:"28 cm \u2013 corn on the cob",cl:"#fffde7",fun:"Exploring its own body through touch \u2013 self-discovery!",dev:["Sense of touch fully developed","Grabs the umbilical cord","Lung development progressing"],mama:"Stretch marks possible. Linea nigra appearing."},
+{w:23,n:"Mini Baby",sz:"29 cm \u2013 eggplant",cl:"#e8eaf6",fun:"Looks like a mini newborn \u2013 just thin and wrinkly!",dev:["Proportions like a newborn","Rapid weight gain","Lungs producing surfactant"],mama:"Swollen ankles normal. Braxton Hicks possible."},
+{w:24,n:"Viable!",sz:"30 cm",cl:"#e3f2fd",fun:"Now \u2018viable\u2019 outside the womb \u2013 a milestone!",dev:["Viability threshold","Surfactant production","Vestibular system works"],mama:"Glucose test (gestational diabetes). Back pain common."},
+{w:25,n:"Strong Grip",sz:"35 cm \u2013 cauliflower",cl:"#f1f8e9",fun:"Amazingly strong grip \u2013 could hold your finger!",dev:["Nervous system maturing fast","Nostrils opening","Responds to touch from outside"],mama:"Sleep problems more common."},
+{w:26,n:"Eyes Open!",sz:"36 cm",cl:"#e8eaf6",fun:"Opens eyes for the first time! Hello world! (well, hello uterus)",dev:["Eyes open for the first time","Can blink","Immune system absorbing antibodies"],mama:"Left side sleeping recommended."},
+{w:27,n:"Dreaming",sz:"37 cm \u2013 coconut",cl:"#efebe9",fun:"Can dream now! About what? Amniotic fluid pool parties?",dev:["REM sleep detectable","Lungs practicing breathing","Can distinguish voices"],mama:"End of 2nd trimester! Water retention common."},
+{w:28,n:"3rd Trimester!",sz:"38 cm",cl:"#e3f2fd",fun:"Can roll eyes in all directions \u2013 full overview!",dev:["3rd trimester begins!","REM sleep: 80% of sleep time","Billions of neurons","Survival rate if premature: >90%"],mama:"Anti-D if Rh-negative. More frequent check-ups."},
+{w:29,n:"Running Out of Room",sz:"39 cm \u2013 pumpkin",cl:"#fff3e0",fun:"Getting cramped in there! Like playing Tetris in a snow globe!",dev:["Muscles and lungs maturing","Bones complete but still soft","Storing iron, calcium, phosphorus"],mama:"Shortness of breath from diaphragm pressure."},
+{w:30,n:"Anti-Aging",sz:"40 cm, ~1.3 kg",cl:"#fce4ec",fun:"Lanugo hair falling out \u2013 first anti-aging program!",dev:["Temperature regulation improving","Lanugo disappearing","About 1.3 kg"],mama:"Fatigue returns. Frequent urination."},
+{w:31,n:"All 5 Senses!",sz:"41 cm",cl:"#e8eaf6",fun:"All 5 senses working! A complete sensory being!",dev:["All senses active","Pupils react to light","Brain connections forming rapidly"],mama:"Braxton Hicks stronger. Birth prep class!"},
+{w:32,n:"Underwater Yoga",sz:"42 cm \u2013 honeydew melon",cl:"#f1f8e9",fun:"Practicing breathing with amniotic fluid \u2013 underwater yoga!",dev:["Lungs practicing intensively","Toenails grown","Skin getting smoother"],mama:"Pelvic floor exercises! Many babies turn head-down."},
+{w:33,n:"Immune Boost",sz:"43 cm \u2013 pineapple",cl:"#fffde7",fun:"Antibodies from mum \u2013 free immune system starter pack!",dev:["Antibody transfer increasing","Bones harder (except skull!)","Sleep more regulated"],mama:"Maternity leave soon! Pack the hospital bag!"},
+{w:34,n:"Peak Vernix",sz:"45 cm",cl:"#fff8e1",fun:"Vernix at its thickest \u2013 like a moisturized Michelin man!",dev:["Vernix at its thickest","Fingernails at fingertips","Lungs almost mature"],mama:"Engagement contractions may start."},
+{w:35,n:"Kidneys Done",sz:"46 cm",cl:"#e3f2fd",fun:"Producing ~500ml urine/day into the amniotic fluid. Recycling!",dev:["Kidneys fully matured","Liver processing waste","Brain weight up by 1/3"],mama:"Perineal massage recommended."},
+{w:36,n:"Starting Position",sz:"47 cm",cl:"#e8f5e9",fun:"Most babies are now head-down \u2013 ready for launch!",dev:["Most babies in head-down position","Skull bones flexible","Meconium accumulated"],mama:"Weekly check-ups. GBS swab."},
+{w:37,n:"Almost There!",sz:"48 cm, ~2.9 kg",cl:"#e8eaf6",fun:"Officially \u2018early term\u2019 \u2013 could arrive fit any time!",dev:["Early term","Strong grasp reflex","Enough surfactant","About 2.9 kg"],mama:"Mucus plug may come loose. Nesting instinct!"},
+{w:38,n:"Ready!",sz:"49 cm",cl:"#fff3e0",fun:"First poop (meconium) is loaded. Parents, you\u2019ve been warned!",dev:["All organs functional","Cries without tears at first","Belly circumference \u2248 head circumference"],mama:"Watch for labor signs: contractions, water breaking."},
+{w:39,n:"Final Sprint",sz:"50 cm",cl:"#e3f2fd",fun:"Brain 30% bigger than 4 weeks ago \u2013 final growth spurt!",dev:["Brain developing rapidly","Lungs ready for first breath","Placenta passing antibodies"],mama:"Patience\u2026 or raspberry leaf tea!"},
+{w:40,n:"Due Date!",sz:"51 cm, ~3.4 kg \u2013 watermelon!",cl:"#e8f5e9",fun:"From poppy seed to watermelon in 40 weeks!",dev:["Fully developed and ready","Skull bones flexible for birth canal","Reflexes: sucking, grasping, Moro"],mama:"Welcome to the world, little miracle!"}
+]
+};
+
+// English weeks share SVGs with German
+(function(){for(var i=0;i<W_LANG.en.length;i++){W_LANG.en[i].svg=W_LANG.de[i].svg;W_LANG.en[i].cl=W_LANG.de[i].cl}})();
+
+// ============================================================
+// ENGINE
+// ============================================================
+var curLang='de';
+
+function getParam(k){return new URLSearchParams(window.location.search).get(k)}
+
+function detectLang(){
+  var p=getParam('lang');
+  if(p&&L[p])return p;
+  var bl=(navigator.language||'').substring(0,2);
+  return L[bl]?bl:'de';
+}
+
+function setLang(lang){
+  curLang=lang;
+  var p=new URLSearchParams(window.location.search);
+  p.set('lang',lang);
+  history.replaceState(null,'',location.pathname+'?'+p.toString());
+  document.documentElement.lang=lang;
+  applyUI();
+  var et=parseET();
+  if(et){
+    document.getElementById('landing').style.display='none';
+    document.getElementById('guide').style.display='block';
+    buildCards(et);
+  }
+}
+
+function applyUI(){
+  var t=L[curLang];
+  document.getElementById('pageTitle').innerHTML=t.title;
+  document.getElementById('pageSubtitle').textContent=t.subtitle;
+  document.getElementById('landingTitle').textContent=t.landTitle;
+  document.getElementById('landingDesc').textContent=t.landDesc;
+  document.getElementById('landingBtn').innerHTML=t.landBtn;
+  document.getElementById('landingDisc').innerHTML=t.landDisc;
+  document.getElementById('triHead1').textContent=t.tri1;
+  document.getElementById('triHead2').textContent=t.tri2;
+  document.getElementById('triHead3').textContent=t.tri3;
+  document.getElementById('discTitle').innerHTML=t.discTitle;
+  document.getElementById('discText').innerHTML=t.discText;
+  document.getElementById('srcTitle').innerHTML=t.srcTitle;
+  document.getElementById('shareBtn').innerHTML=t.shareBtn;
+  document.getElementById('footer').innerHTML=t.footer;
+  document.title=t.title.replace(/[^\w\s\u00c0-\u024f\u2013\u2014]/g,'').trim();
+  // Lang buttons
+  var sw=document.getElementById('langSwitch');
+  sw.innerHTML='';
+  for(var i=0;i<LANGS.length;i++){
+    var b=document.createElement('button');
+    b.textContent=L[LANGS[i]].flag+' '+L[LANGS[i]].label;
+    b.className=LANGS[i]===curLang?'active':'';
+    b.setAttribute('data-lang',LANGS[i]);
+    b.onclick=function(){setLang(this.getAttribute('data-lang'))};
+    sw.appendChild(b);
+  }
+}
+
+function fmt(d){return d.getDate()+'. '+L[curLang].months[d.getMonth()]+' '+d.getFullYear()}
+
+function parseET(){
+  var v=getParam('et');
+  if(v&&/^\d{4}-\d{2}-\d{2}$/.test(v)){
+    var p=v.split('-');
+    return new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]));
+  }
+  return null;
+}
+
+function startGuide(){
+  var inp=document.getElementById('etInput');
+  if(!inp.value)return;
+  var p=new URLSearchParams(window.location.search);
+  p.set('et',inp.value);
+  p.set('lang',curLang);
+  window.location.search='?'+p.toString();
+}
+
+function getShareUrl(){
+  var p=new URLSearchParams(window.location.search);
+  var base=window.location.origin+window.location.pathname;
+  return base+'?et='+p.get('et')+'&lang='+curLang;
+}
+
+function shareLink(){
+  var url=getShareUrl();
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(url).then(function(){
+      document.getElementById('shareMsg').textContent=L[curLang].shareCopied;
+      setTimeout(function(){document.getElementById('shareMsg').textContent=''},2000);
+    });
+  }else{prompt('Copy:',url)}
+}
+
+function buildShareBox(){
+  var t=L[curLang];
+  var url=getShareUrl();
+  var enc=encodeURIComponent(url);
+  var txt=encodeURIComponent(t.shareText+' '+url);
+  document.getElementById('shareLabel').textContent=t.shareLabel;
+  document.getElementById('shareUrl').textContent=url;
+  document.getElementById('shareBtn').innerHTML=t.shareBtn;
+  var btns=document.getElementById('shareBtns');
+  btns.innerHTML='<a class="share-wa" href="https://wa.me/?text='+txt+'" target="_blank">\ud83d\udce4 '+t.shareWa+'</a>'
+    +'<a class="share-tg" href="https://t.me/share/url?url='+enc+'&text='+encodeURIComponent(t.shareText)+'" target="_blank">\ud83d\udce4 '+t.shareTg+'</a>'
+    +'<a class="share-mail" href="mailto:?subject='+encodeURIComponent(t.shareText)+'&body='+txt+'">\u2709\ufe0f '+t.shareMail+'</a>';
+}
+
+function buildCards(et){
+  var t=L[curLang];
+  var weeks=W_LANG[curLang];
+  var start=new Date(et.getTime()-279*24*60*60*1000);
+  var now=new Date();
+  var diff=Math.floor((now-start)/(1000*60*60*24));
+  var curSSW=Math.floor(diff/7)+1;
+  var curDay=diff%7;
+
+  document.getElementById('etBanner').innerHTML=t.etBanner.replace('%s',fmt(et));
+  buildShareBox();
+
+  var cd=document.getElementById('countdown');
+  var left=Math.floor((et-now)/(1000*60*60*24));
+  if(left>0&&curSSW>=1&&curSSW<=42){
+    var wl=Math.floor(left/7),dl=left%7;
+    cd.innerHTML=t.countdownTpl.replace('%ssw%',curSSW).replace('%d%',curDay).replace('%w%',wl).replace('%d2%',dl);
+  }else if(left<=0){
+    cd.innerHTML=t.countdownDone;
+  }else{cd.style.display='none'}
+
+  var containers={t1:document.getElementById('cards-t1'),t2:document.getElementById('cards-t2'),t3:document.getElementById('cards-t3')};
+  containers.t1.innerHTML='';containers.t2.innerHTML='';containers.t3.innerHTML='';
+
+  for(var i=0;i<weeks.length;i++){
+    var w=weeks[i];
+    var weekStart=new Date(start.getTime()+(w.w-1)*7*24*60*60*1000);
+    var tri=w.w<=12?'t1':w.w<=27?'t2':'t3';
+    var isNow=w.w===curSSW;
+    var isPast=w.w<curSSW;
+    var cls='cd'+(isNow?' now':'')+(isPast?' past':'');
+    var etNote='';
+    if(w.w===40)etNote=' \u2013 <b>ET '+fmt(et)+'</b>';
+
+    var h='<div class="'+cls+'">';
+    if(isNow)h+='<div class="now-badge">'+t.nowBadge.replace('%ssw%',curSSW).replace('%d%',curDay)+'</div>';
+    h+='<div class="tp"><div class="ic" style="background:'+w.cl+'"><svg viewBox="0 0 40 40">'+w.svg+'</svg></div>';
+    h+='<div class="ti"><h2>'+t.weekLabel+' '+w.w+': '+w.n+'</h2>';
+    h+='<div class="dt">\ud83d\udcc5 '+fmt(weekStart)+etNote+'</div>';
+    h+='<div class="sz">\ud83d\udccf '+w.sz+'</div></div></div>';
+    h+='<div class="fn">\ud83d\udca1 '+w.fun+'</div>';
+    h+='<div class="dv"><b>'+t.devLabel+'</b><ul>';
+    for(var j=0;j<w.dev.length;j++)h+='<li>'+w.dev[j]+'</li>';
+    h+='</ul></div>';
+    h+='<div class="mm">'+t.mamaLabel+' '+w.mama+'</div></div>';
+    containers[tri].innerHTML+=h;
+  }
+
+  if(curSSW>=1&&curSSW<=40){
+    setTimeout(function(){
+      var el=document.querySelector('.cd.now');
+      if(el)el.scrollIntoView({behavior:'smooth',block:'center'});
+    },300);
+  }
+}
+
+// INIT
+(function(){
+  curLang=detectLang();
+  applyUI();
+  var et=parseET();
+  if(et){
+    document.getElementById('landing').style.display='none';
+    document.getElementById('guide').style.display='block';
+    buildCards(et);
+  }
+})();
+</script>
+</body>
+</html>
